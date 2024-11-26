@@ -61,7 +61,8 @@ struct ContentView: View {
             }
             .navigationTitle("Recovery Tracker")
             .toolbar {
-                // Add Vice button in the toolbar
+                // Platform-specific toolbar placement
+                #if os(iOS)
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showAddVice = true
@@ -69,6 +70,15 @@ struct ContentView: View {
                         Image(systemName: "plus")
                     }
                 }
+                #elseif os(macOS)
+                ToolbarItem {
+                    Button(action: {
+                        showAddVice = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+                #endif
             }
             .sheet(isPresented: $showAddVice) {
                 AddViceView(vices: $vices)

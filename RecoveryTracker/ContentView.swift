@@ -10,8 +10,8 @@ import SwiftUI
 // Data Model for a Vice
 struct Vice: Identifiable {
     let id = UUID() // Unique identifier for each vice
-    let name: String // Name of the vice
-    let cleanDate: Date // Clean date and time
+    var name: String // Name of the vice
+    var cleanDate: Date // Clean date and time
 }
 
 struct ContentView: View {
@@ -42,15 +42,17 @@ struct ContentView: View {
                             .foregroundColor(.gray)
                     }
                 } else {
-                    // List of vices
+                    // List of vices with navigation to detail view
                     List {
-                        ForEach(vices) { vice in
-                            VStack(alignment: .leading) {
-                                Text(vice.name)
-                                    .font(.headline)
-                                Text("Sober since \(formattedDate(vice.cleanDate))")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+                        ForEach($vices) { $vice in
+                            NavigationLink(destination: ViceDetailView(vice: $vice)) {
+                                VStack(alignment: .leading) {
+                                    Text(vice.name)
+                                        .font(.headline)
+                                    Text("Sober since \(formattedDate(vice.cleanDate))")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
                         .onDelete(perform: deleteVice)
